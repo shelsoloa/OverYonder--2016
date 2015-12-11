@@ -1,0 +1,11 @@
+- Dasher enemy
+   - Change sprite (looks too similar to Bullet Bill)
+- Background
+   - Make less repetetive (use more than one tile for BACKGROUND0 layer)
+- Weapons
+   - Multiple attack animations
+- Fix build
+   - Add spike image 
+- Mobility
+   - Improve the game feel
+   

@@ -4,7 +4,6 @@ import pygame
 import sys
 from pygame.locals import *
 
-
 ENTITY_ROOM = None
 
 
@@ -26,6 +25,20 @@ class GC(object):
 
         os.environ['SDL_VIDEO_CENTERED'] = "1"
 
+        try:
+            pygame.display.init()
+            pygame.font.init()
+            pygame.joystick.init()
+            pygame.mixer.init(44100, 16, 2, 512)
+        except Exception:
+            if pygame.display.get_init() is None or \
+               pygame.font.get_init() is None:
+                print "Could not initialize pygame core. Aborting."
+                return -1
+            else:
+                print "Could not initialize pygame modules"
+
+        '''
         pygame.mixer.pre_init(44100, 16, 2, 512)
         if platform.system() == 'Linux':
             pygame.display.init()
@@ -33,6 +46,7 @@ class GC(object):
             # TODO fix Linux mixer (very low priority)
         else:
             pygame.init()
+        '''
 
         # General initialization
         GC._title = title
@@ -111,6 +125,38 @@ class GC(object):
             print "[ERROR] Unexpected error. Over Yonder will now shutdown."
             traceback.print_exc()
             sys.exit()
+
+    @staticmethod
+    def toggle_fullscreen():
+        screen = pygame.display.get_surface()
+        caption = pygame.display.get_caption()
+        
+        flags = screen.get_flags()
+        bits = screen.get_bitsize()
+
+        pygame.display.quit()
+        pygame.display.init()
+
+        if flags^FULLSCREEN:
+            monitor_info = pygame.display.Info()
+
+            ratio = min(float(monitor_info.current_w) / float(GC.view_size[0]),
+                        float(monitor_info.current_h) / float(GC.view_size[1]))
+
+            window_width = int(GC.view_size[0] * ratio)
+            window_height = int(GC.view_size[1] * ratio)
+            
+            GC.window_size = (window_width, window_height)
+        else:
+            GC.window_size = (GC.view_size[0] * GC._scale, GC.view_size[1] * GC._scale)
+        pygame.display.set_caption(*caption)
+
+        GC._window_surface = pygame.display.set_mode(GC.window_size, flags^FULLSCREEN, bits)
+        GC._render_surface = pygame.Surface(GC.view_size)
+
+
+        Graphics._MAIN_CONTEXT = GC._render_surface
+        Graphics.set_context(GC._render_surface)
 
     @staticmethod
     def quit():
@@ -210,8 +256,12 @@ class Entity(object):
         self.active = False
         ENTITY_ROOM.remove(self)
 
+    # TODO change to validate_coordinates(self, x, y)
     def _check_bounds(self, x, y):
-        return (self.x, self.y) if (x is None or y is None) else (x, y)
+        if x is None or y is None:
+            return (self.x, self.y)
+        else:
+            return (x, y)
 
     def collides(self, e, x=None, y=None):  
         x, y = self._check_bounds(x, y)
@@ -248,7 +298,8 @@ class Entity(object):
                 collisions.append(entity)
         return collisions
     
-    def collides_multiple_groups(self, groups, x=None, y=None):
+    def collides_groups(self, x=None, y=None, *groups):
+        # TODO convert to *args
         x, y = self._check_bounds(x, y)
 
         global ENTITY_ROOM
@@ -363,6 +414,16 @@ class Graphics(object):
         y2 -= Graphics.translate_y
 
         pygame.draw.line(Graphics.context, Graphics.color, (x1, y1), (x2, y2))
+
+    @staticmethod
+    def draw_circle(x, y, diameter):
+        radius = diameter / 2
+
+        x = int(x - Graphics.translate_x + radius)
+        y = int(y - Graphics.translate_y + radius)
+
+        pygame.draw.circle(Graphics.context, Graphics.color, (x, y), radius)
+
 
     @staticmethod
     def draw_rect(x, y, width, height):
@@ -550,6 +611,53 @@ class Input(object):
             return K_UP
         elif key == 'down':
             return K_DOWN
+
+        elif key == '1':
+            return K_1;
+        elif key == '2':
+            return K_2;
+        elif key == '3':
+            return K_3;
+        elif key == '4':
+            return K_4;
+        elif key == '5':
+            return K_5;
+        elif key == '6':
+            return K_6;
+        elif key == '7':
+            return K_7;
+        elif key == '8':
+            return K_8;
+        elif key == '9':
+            return K_9;
+        elif key == '0':
+            return K_0;
+
+        elif key == 'F1':
+            return K_F1;
+        elif key == 'F2':
+            return K_F2;
+        elif key == 'F3':
+            return K_F3;
+        elif key == 'F4':
+            return K_F4;
+        elif key == 'F5':
+            return K_F5;
+        elif key == 'F6':
+            return K_F6;
+        elif key == 'F7':
+            return K_F7;
+        elif key == 'F8':
+            return K_F8;
+        elif key == 'F9':
+            return K_F9;
+        elif key == 'F10':
+            return K_F10;
+        elif key == 'F11':
+            return K_F11;
+        elif key == 'F12':
+            return K_F12;
+
         elif key == 'a':
             return K_a
         elif key == 'b':
@@ -611,10 +719,10 @@ class State(object):
         self.world = world
         self.name = name
 
-    def enter(self):
+    def enter(self, previous_state, *args):
         return
 
-    def exit(self):
+    def exit(self, next_state, *args):
         return
 
     def render(self):
@@ -630,16 +738,24 @@ class World(object):
         self.states = {}
         self.current_state = None
 
-    def change_state(self, state_name):
-        if state_name in self.states:
-            self.current_state.exit()
-            self.current_state = self.states[state_name]
-            self.current_state.enter()
+    def change_state(self, state_name, *args):
+        if state_name in self.states and \
+           state_name != self.current_state.name:
+            previous_state = self.current_state
+            incoming_state = self.states[state_name]
+
+            previous_state.exit(incoming_state, *args)
+            incoming_state.enter(previous_state, *args)
+            
+            self.current_state = incoming_state
+        else:
+            print state_name in self.states
+            print '[ERROR] change_state request invalid'
 
     def exit(self):
         ENTITY_ROOM.clear()
         if self.current_state is not None:
-            self.current_state.exit()
+            self.current_state.exit(None)
 
     def update(self):
         return

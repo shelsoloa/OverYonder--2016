@@ -1,0 +1,13 @@
+
+ - Design levels
+ - Create objects
+ - Create levels in Tiled
+ - Playtest
+
+Ship
+
+- Entity Layers
+-- Player below enemies
+-- Player above ladders and other objects
+-- Player below water
+-- Enemies below water

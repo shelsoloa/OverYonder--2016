@@ -43,7 +43,7 @@ class pygame2exe(py2exe.build_exe.py2exe):
 class BuildExe:
     def __init__(self):
         # Name of starting .py
-        self.script = "main.py"
+        self.script = "run.py"
 
         # Name of program
         self.project_name = "Over Yonder"

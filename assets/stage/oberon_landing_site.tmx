@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="14" tilewidth="16" tileheight="16" nextobjectid="34">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="64" height="14" tilewidth="16" tileheight="16" nextobjectid="35">
  <properties>
   <property name="OUTSIDE" value="True"/>
   <property name="PLANET" value="oberon"/>
@@ -1849,6 +1849,7 @@
    </properties>
   </object>
   <object id="28" name="DEBUG_SPAWN" x="944" y="112"/>
+  <object id="34" name="SHIP" x="864" y="128" width="16" height="16"/>
  </objectgroup>
  <objectgroup name="ENEMIES"/>
  <layer name="FOREGROUND" width="64" height="14">
