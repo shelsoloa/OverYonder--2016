@@ -3,7 +3,7 @@
  <properties>
   <property name="PLANET" value="oberon"/>
  </properties>
- <tileset firstgid="1" name="TILES_TMP" tilewidth="16" tileheight="16">
+ <tileset firstgid="1" name="TILES_TMP" tilewidth="16" tileheight="16" tilecount="8" columns="4">
   <image source="../img/tiles_placeholder.png" width="64" height="32"/>
   <tile id="0">
    <properties>
@@ -11,16 +11,16 @@
    </properties>
   </tile>
  </tileset>
- <tileset firstgid="9" name="TILES_OBR" tilewidth="16" tileheight="16">
+ <tileset firstgid="9" name="TILES_OBR" tilewidth="16" tileheight="16" tilecount="72" columns="9">
   <image source="../img/tiles_rock.png" trans="000000" width="144" height="128"/>
  </tileset>
- <tileset firstgid="81" name="TILES_REP" tilewidth="16" tileheight="16">
+ <tileset firstgid="81" name="TILES_REP" tilewidth="16" tileheight="16" tilecount="80" columns="8">
   <image source="../img/tiles_grass.png" width="128" height="160"/>
  </tileset>
- <tileset firstgid="161" name="TILES_TEK" tilewidth="16" tileheight="16">
+ <tileset firstgid="161" name="TILES_TEK" tilewidth="16" tileheight="16" tilecount="45" columns="9">
   <image source="../img/tiles_city.png" width="144" height="80"/>
  </tileset>
- <tileset firstgid="206" name="TILES_GEN" tilewidth="16" tileheight="16">
+ <tileset firstgid="206" name="TILES_GEN" tilewidth="16" tileheight="16" tilecount="40" columns="10">
   <image source="../img/tiles_general.png" trans="ff00ff" width="160" height="64"/>
  </tileset>
  <layer name="Mock" width="92" height="41">
@@ -15284,7 +15284,7 @@
   </object>
   <object id="139" name="SWITCH" x="208" y="496" width="16" height="16">
    <properties>
-    <property name="ON_ACTIVATE" value="core.ENTITY_ROOM.get_name('retract').open();"/>
+    <property name="ON_ACTIVATE" value="PC.world.stage.get_name('retract').open();"/>
    </properties>
   </object>
  </objectgroup>

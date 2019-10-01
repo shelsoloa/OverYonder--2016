@@ -486,6 +486,24 @@ class Graphics(object):
             y += cell_height
 
 
+class Sound(object):
+    def __init__(self, sound):
+        self.sound_file = sound
+        self.current_channel = None
+
+    def playing(self):
+        if self.current_channel is None:
+            return False
+        else:
+            return self.current_channel.get_busy()
+
+    def play(self):
+        self.current_channel = self.sound_file.play()
+
+    def stop(self):
+        self.sound_file.stop()
+
+
 class Input(object):
 
     curr_key_state = []

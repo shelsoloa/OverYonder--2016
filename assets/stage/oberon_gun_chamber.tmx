@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="10" tilewidth="16" tileheight="16" nextobjectid="25">
- <tileset firstgid="1" name="TILES_TMP" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="16" height="10" tilewidth="16" tileheight="16" nextobjectid="27">
+ <tileset firstgid="1" name="TILES_TMP" tilewidth="16" tileheight="16" tilecount="8" columns="4">
   <image source="../img/tiles_placeholder.png" width="64" height="32"/>
  </tileset>
- <tileset firstgid="9" name="TILES_OBR" tilewidth="16" tileheight="16">
+ <tileset firstgid="9" name="TILES_OBR" tilewidth="16" tileheight="16" tilecount="72" columns="9">
   <image source="../img/tiles_rock.png" trans="000000" width="144" height="128"/>
  </tileset>
- <tileset firstgid="81" name="TILES_REP" tilewidth="16" tileheight="16">
+ <tileset firstgid="81" name="TILES_REP" tilewidth="16" tileheight="16" tilecount="80" columns="8">
   <image source="../img/tiles_grass.png" width="128" height="160"/>
  </tileset>
- <tileset firstgid="161" name="TILES_TEK" tilewidth="16" tileheight="16">
+ <tileset firstgid="161" name="TILES_TEK" tilewidth="16" tileheight="16" tilecount="45" columns="9">
   <image source="../img/tiles_city.png" width="144" height="80"/>
  </tileset>
- <tileset firstgid="206" name="TILES_GEN" tilewidth="16" tileheight="16">
+ <tileset firstgid="206" name="TILES_GEN" tilewidth="16" tileheight="16" tilecount="40" columns="10">
   <image source="../img/tiles_general.png" trans="ff00ff" width="160" height="64"/>
  </tileset>
  <objectgroup name="EVENTS"/>
@@ -207,6 +207,7 @@
     <property name="VALUE" value="None"/>
    </properties>
   </object>
+  <object id="25" name="DEBUG_SPAWN" x="128" y="64"/>
  </objectgroup>
  <layer name="FOREGROUND" width="16" height="10">
   <data>
